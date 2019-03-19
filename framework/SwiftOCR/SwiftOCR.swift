@@ -30,7 +30,7 @@ fileprivate func >= <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
 
 ///The characters the globalNetwork can recognize.
 ///It **must** be in the **same order** as the network got trained
-public var recognizableCharacters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
+public var recognizableCharacters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789/"
 ///The FFNN network used for OCR
 public var globalNetwork = FFNN.fromFile(Bundle(for: SwiftOCR.self).url(forResource: "OCR-Network", withExtension: nil)!)!
 
@@ -95,12 +95,12 @@ open class SwiftOCR {
     open   func recognize(_ image: OCRImage, _ completionHandler: @escaping (String) -> Void){
         
         func indexToCharacter(_ index: Int) -> Character {
-            return Array(characters.characters)[index]
+            return Array(characters)[index]
         }
         
         func checkWhiteAndBlackListForCharacter(_ character: Character) -> Bool {
-            let whiteList =   characterWhiteList?.characters.contains(character) ?? true
-            let blackList = !(characterBlackList?.characters.contains(character) ?? false)
+            let whiteList =   characterWhiteList?.contains(character) ?? true
+            let blackList = !(characterBlackList?.contains(character) ?? false)
             
             return whiteList && blackList
         }
@@ -581,7 +581,7 @@ open class SwiftOCR {
             let orientationUp = UIImage.Orientation.up
             #else
             //GPUImage is using a re-definition of the UIImageOrientation for Mac compilation
-            let orientationUp = UIImageOrientation.up
+            let orientationUp = UIImage.Orientation.up
             #endif
             
             var processedImage:OCRImage? = dodgeBlendFilter.imageFromCurrentFramebuffer(with: orientationUp)
